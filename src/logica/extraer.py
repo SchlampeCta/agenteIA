@@ -24,8 +24,8 @@ class ExtractorPDF:
 
 if __name__ == "__main__":
 
-    extractor = ExtractorPDF("/home/usuario/Documentos/AGENTE/docs/Informe_Cierre_PC-2026-006_Supermercados_La_Canasta.pdf")
+    extraerDocUno = ExtractorPDF("/home/usuario/Documentos/AGENTE/docs/Informe_Cierre_PC-2026-006_Supermercados_La_Canasta.pdf")
 
-    texto = extractor.extraer_texto()
+    texto = extraerDocUno.extraer_texto()
 
     print(texto)

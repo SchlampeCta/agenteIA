@@ -1,0 +1,10 @@
+# ==========================================
+# ARCHIVOS DE CONFIGURACIÓN LOCAL (CONFIDENCIAL)
+# ==========================================
+# No subir las credenciales, *.pyc si se puede
+
+
+.env
+.venv/
+__pycache__/
+*.pyc
