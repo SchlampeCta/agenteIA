@@ -16,11 +16,32 @@ class GuardarMySQL:
             database="procesa_consultores"
         )
 
+
     def guardar_ficha(self, ficha):
 
         cursor = self.conexion.cursor()
 
-        # Guardar información general del proyecto
+        # 1. Comprobar si el proyecto ya existe
+        sql_buscar = """
+            SELECT id
+            FROM proyectos
+            WHERE codigo_proyecto = %s
+        """
+
+        cursor.execute(sql_buscar, (ficha.codigo_proyecto,))
+        proyecto_existente = cursor.fetchone()
+
+        if proyecto_existente:
+            print(
+                f"El proyecto {ficha.codigo_proyecto} "
+                "ya existe en MySQL. No se insertará nuevamente."
+            )
+
+            cursor.close()
+            self.conexion.close()
+            return
+
+        # 2. Guardar información general del proyecto
         sql_proyecto = """
             INSERT INTO proyectos (
                 codigo_proyecto,
@@ -57,7 +78,7 @@ class GuardarMySQL:
 
         proyecto_id = cursor.lastrowid
 
-        # Guardar resultados
+        # 3. Guardar resultados
         sql_resultado = """
             INSERT INTO resultados (
                 proyecto_id,
@@ -83,9 +104,13 @@ class GuardarMySQL:
 
             cursor.execute(sql_resultado, valores_resultado)
 
+        # 4. Confirmar cambios
         self.conexion.commit()
 
         cursor.close()
         self.conexion.close()
 
-        print("Ficha guardada correctamente en MySQL.")
+        print(
+            f"Proyecto {ficha.codigo_proyecto} "
+            "guardado correctamente en MySQL."
+        )
